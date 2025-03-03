@@ -2,7 +2,7 @@
 from apis.logrhythm_api import LogRhythmAPI
 from apis.remedy_api import RemedyAPI
 from apis.prtg_api import PRTGAPI
-from apis.defender_api import DefenderAPI
+from apis.kaxan_api import 
 
 def main():
     logrhythm = LogRhythmAPI()

@@ -1,6 +1,8 @@
+import os
+
 LOGRHYTHM_API = {
-    "base_url_log": "https://logrhythm.example.com/api",
-    "api_key_log": ""
+    "base_url_log": os.getenv("LOGRHYTHM_API_URL"),
+    "token_log": os.getenv("LOGRHYTHM_API_TOKEN")
 }
 
 REMEDY_API = {
@@ -10,9 +12,8 @@ REMEDY_API = {
 }
 
 PRTG_API = {
-    "base_url_prtg": "https://prtg.example.com/api",
-    "username_prtg": "",
-    "password_prtg": ""
+    "base_url_prtg": os.getenv("PRTG_API_URL"),
+    "token_prtg": os.getenv("PRTG_API_TOKEN") 
 }
 
 DEFENDER_API = {
@@ -20,4 +21,10 @@ DEFENDER_API = {
     "tenant_id_def": "",
     "client_id_def": "",
     "client_secret_def": ""
+}
+
+#KAXAN
+BASE_URL = os.getenv("KAXAN_API_URL")
+HEADERS = {
+    "Content-Type": "application/json"
 }
