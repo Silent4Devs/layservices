@@ -1,15 +1,17 @@
+import os
 import requests
-from config.settings import PRTG_API
 
-class PRTGAPI:
-    def __init__(self):
-        self.base_url = PRTG_API["base_url"]
-        self.auth_params = {
-            "username": PRTG_API["username"],
-            "password": PRTG_API["password"]
-        }
+params = {
+    "content": "messages",
+    "columns": "group,group_raw,device,device_raw,sensor,sensor_raw,status,status_raw",
+    "apitoken": os.getenv("PRTG_API_TOKEN")
+}
 
-    def get_sensors(self):
-        url = f"{self.base_url}/table.json"
-        response = requests.get(url, params=self.auth_params)
-        return response.json()
+try:
+    response = os.getenv("PRTG_API_URL", params=params)
+    response.raise_for_status()  # Lanza una excepción si hay un error HTTP
+    data = response.json()
+    print("Datos obtenidos:", data)
+except requests.exceptions.RequestException as e:
+    print(f"Error al realizar la solicitud: {e}")
+    data = None
