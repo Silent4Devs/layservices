@@ -11,7 +11,7 @@ class LoghRhythmAlarmFetcher(AlarmFetcher):
         self.seen_alerts = set()
         self.headers = {"Authorization": f"Bearer {self.api_key}", "accept" : "application/json"}
 
-    async def fetchAlerts(self):
+    async def fetchAlarms(self):
 
         async with aiohttp.ClientSession() as session:
             while True:
@@ -39,7 +39,7 @@ async def main():
         print("API_KEY no encontrada en .env")
         return
     fetcher = LoghRhythmAlarmFetcher(url, api_key)
-    await fetcher.fetchAlerts()
+    await fetcher.fetchAlarms()
 
 if __name__ == "__main__":
     asyncio.run(main())
