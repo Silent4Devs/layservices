@@ -18,6 +18,7 @@ class AlertFetcher:
                     async with session.get(self.url, headers=headers) as response:
                         if response.status == 200:
                             data = await response.json()
+                            print(data)
                             alerts = data.get("alerts", [])
                             for alert in alerts:
                                 alert_id = alert.get("id")
@@ -33,8 +34,8 @@ class AlertFetcher:
 
 async def main():
     load_dotenv()
-    url = "https://10.249.249.3:8501/lr-alarm-api/alarms"
-    api_key = os.getenv("API_KEY")
+    url = os.getenv("LOGRHYTHM_API_TOKEN") + "lr-alarm-api/alarms"
+    api_key = os.getenv("LOGRHYTHM_API_TOKEN")
     if not api_key:
         print("API_KEY no encontrada en .env")
         return
