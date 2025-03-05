@@ -2,35 +2,34 @@ import aiohttp
 import asyncio
 import os
 from dotenv import load_dotenv
+from .AlarmFetcher import AlarmFetcher
 
-class AlertFetcher:
+class LoghRhythmAlarmFetcher(AlarmFetcher):
 
     def __init__(self, url: str, api_key: str):
-        self.url = url
-        self.api_key = api_key
+        super().__init__(url, api_key)
         self.seen_alerts = set()
+        self.headers = {"Authorization": f"Bearer {self.api_key}", "accept" : "application/json"}
 
-    async def fetch_alerts(self):
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+    async def fetchAlerts(self):
+
         async with aiohttp.ClientSession() as session:
             while True:
-                try:
-                    async with session.get(self.url, headers=headers) as response:
-                        if response.status == 200:
-                            data = await response.json()
-                            print(data)
-                            alerts = data.get("alerts", [])
-                            for alert in alerts:
-                                alert_id = alert.get("id")
-                                if alert_id and alert_id not in self.seen_alerts:
-                                    self.seen_alerts.add(alert_id)
-                                    print(f"Nueva alerta: {alert}")
-                        else:
-                            print(f"Error {response.status}: {await response.text()}")
-                except Exception as e:
-                    print(f"Error de conexión: {e}")
-                
-                await asyncio.sleep(0.3)  
+                async with session.get(url=self.url, headers=self.headers, ssl=False) as response:
+                    print("Consultando...")
+                    if response.status == 200:                     
+                        data = await response.json()
+                    
+                        data = data.get("alarmsSearchDetails")
+                                          
+                        for alarma in data:                         
+                     
+                            alarm_id = alarma.get("alarmId") 
+                            if alarm_id not in self.seen_alerts:                             
+                                self.seen_alerts.add(alarm_id)                            
+                                print(f"Nueva alarma: {alarma}") 
+                    await asyncio.sleep(0.3)
+        return response.text
 
 async def main():
     load_dotenv()
@@ -39,8 +38,8 @@ async def main():
     if not api_key:
         print("API_KEY no encontrada en .env")
         return
-    fetcher = AlertFetcher(url, api_key)
-    await fetcher.fetch_alerts()
+    fetcher = LoghRhythmAlarmFetcher(url, api_key)
+    await fetcher.fetchAlerts()
 
 if __name__ == "__main__":
     asyncio.run(main())
