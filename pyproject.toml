@@ -58,5 +58,10 @@ dependencies = [
     "urllib3==2.3.0",
     "uvicorn==0.34.0",
     "yarl==1.18.3",
-    "zstandard==0.23.0"
+    "zstandard==0.23.0",
+    "cffi==1.17.1",
+    "cryptography==44.0.2",
+    "pycparser==2.22",
+    "pyspnego==0.11.2",
+    "smbprotocol==1.15.0"
 ]
