@@ -63,5 +63,8 @@ dependencies = [
     "cryptography==44.0.2",
     "pycparser==2.22",
     "pyspnego==0.11.2",
-    "smbprotocol==1.15.0"
+    "smbprotocol==1.15.0",
+    "pypdf2==3.0.1",
+    "alembic==1.15.1",
+    "mako==1.3.9"
 ]
