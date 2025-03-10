@@ -15,8 +15,26 @@ services:
         target: /qdrant/config/production.yaml
     volumes:
       - ./qdrant_data:/qdrant/storage
+    networks:
+      - layservicesnetwork
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./infra/redis/redis.conf:/usr/local/etc/redis/redis.conf 
+    networks:
+      - layservicesnetwork
+    mem_limit: 4g
+    expose:
+      - 6379
+      
 configs:
   qdrant_config:
     content: |
       log_level: INFO
+networks:
+  layservicesnetwork:
+    driver: bridge
