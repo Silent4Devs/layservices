@@ -74,5 +74,6 @@ dependencies = [
     "hyperframe==6.1.0",
     "portalocker==2.10.1",
     "protobuf==5.29.3",
-    "qdrant-client==1.13.3"
+    "qdrant-client==1.13.3",
+    "redis==5.2.1"
 ]
