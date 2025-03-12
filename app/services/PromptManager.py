@@ -6,7 +6,7 @@ class PromptManager:
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
         self.templates_dir = os.path.join(project_root, 'prompts') 
 
-    def get_prompt_template(self, file_name: str) -> str:
+    def get_prompt_file(self, file_name: str) -> str:
         """
         Return the prompt template by reading from a file inside the prompts folder.
         """
