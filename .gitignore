@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore dynaconf secret files
+.secrets.*
+
+qdrant_data/
