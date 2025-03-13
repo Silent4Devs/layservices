@@ -174,3 +174,4 @@ cython_debug/
 .secrets.*
 
 qdrant_data/
+scratch/
