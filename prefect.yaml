@@ -1,0 +1,25 @@
+name: socfusion
+variables:
+  PREFECT_API_URL: "http://localhost:4200"
+
+deployments:
+  # Deployment para LogRhythm
+  - name: logrhythm-realtime-monitoring
+    entrypoint: "app/pipelines/alarms_fetcher.py:alarm_monitoring_logrythm"
+    work_pool:
+      name: default-agent-pool
+      work_queue_name: critical
+    parameters: {}
+    tags: ["logrhythm", "monitoring", "realtime", "prod"]
+    description: "Monitoreo en tiempo real de alarmas desde LogRhythm"
+
+  # Deployment para PRTG
+  - name: prtg-realtime-monitoring
+    entrypoint: "app/pipelines/alarms_fetcher.py:alarm_monitoring_prtg"
+    work_pool:
+      name: default-agent-pool
+      work_queue_name: critical
+    parameters: {}
+    tags: ["prtg", "monitoring", "realtime", "prod"]
+    description: "Monitoreo en tiempo real de alarmas desde PRTG"
+
