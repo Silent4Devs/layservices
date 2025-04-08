@@ -136,6 +136,8 @@ dependencies = [
     "torch>=2.6.0",
     "sentence-transformers>=3.4.1",
     "docling>=2.15.1",
+    "fastmcp>=0.4.1",
+    "mistune>=3.1.3",
 ]
 
 [tool.dynaconf]
