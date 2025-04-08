@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from transformers import pipeline, GPT2LMHeadModel, GPT2Tokenizer
 from app.routes import health_databases
+from app.routes import documents
 import torch
 
 app = FastAPI(
@@ -11,7 +12,7 @@ app = FastAPI(
 )
 
 app.include_router(health_databases.router, prefix="/health")
-
+app.include_router(documents.router, prefix="/documents")
 
 if __name__ == "__main__":
     import uvicorn
