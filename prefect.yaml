@@ -23,3 +23,13 @@ deployments:
     tags: ["prtg", "monitoring", "realtime", "prod"]
     description: "Monitoreo en tiempo real de alarmas desde PRTG"
 
+  # Deployment for Document Loader
+  - name: document-loader
+    entrypoint: "app/pipelines/file_server.py:document_loading_flow"
+    work_pool:
+      name: default-agent-pool
+      work_queue_name: critical
+    parameters:  {}
+    tags: ["document", "loader", "prod"]
+    description: "Carga de documentos de FileServer a Qdrant"
+
