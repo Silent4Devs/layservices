@@ -3999,6 +3999,13 @@ dependencies = [
     { name = "zstandard" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "fastapi" },
+    { name = "uv" },
+    { name = "uvicorn" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "aiohappyeyeballs", specifier = "==2.4.6" },
@@ -4134,6 +4141,13 @@ requires-dist = [
     { name = "yarl", specifier = "==1.18.3" },
     { name = "zipp", specifier = "==3.21.0" },
     { name = "zstandard", specifier = "==0.23.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "fastapi", specifier = ">=0.115.9" },
+    { name = "uv", specifier = ">=0.6.6" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 
 [[package]]

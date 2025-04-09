@@ -144,3 +144,10 @@ dependencies = [
 settings_files = [".env"]  
 load_dotenv = true  
 environments = true  
+
+[dependency-groups]
+dev = [
+    "fastapi>=0.115.9",
+    "uv>=0.6.6",
+    "uvicorn>=0.34.0",
+]
