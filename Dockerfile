@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install uv
 
 RUN uv venv
-RUN source .venv/bin/activate
-RUN uv sync
+
+RUN uv sync --only-group dev
 
 CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
