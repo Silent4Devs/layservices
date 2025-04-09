@@ -151,3 +151,8 @@ dev = [
     "uv>=0.6.6",
     "uvicorn>=0.34.0",
 ]
+fastmcp = [
+    "fastmcp>=0.4.1",
+    "uv>=0.6.6",
+    "uvicorn>=0.34.0",
+]

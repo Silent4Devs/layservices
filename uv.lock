@@ -4005,6 +4005,11 @@ dev = [
     { name = "uv" },
     { name = "uvicorn" },
 ]
+fastmcp = [
+    { name = "fastmcp" },
+    { name = "uv" },
+    { name = "uvicorn" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -4146,6 +4151,11 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "fastapi", specifier = ">=0.115.9" },
+    { name = "uv", specifier = ">=0.6.6" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
+]
+fastmcp = [
+    { name = "fastmcp", specifier = ">=0.4.1" },
     { name = "uv", specifier = ">=0.6.6" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
