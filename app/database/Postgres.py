@@ -1,10 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from config import settings  
 from .ConnectionManager import ConnectionManager
-
-Base = declarative_base()
 
 class PostgreSQLManager(ConnectionManager):
     def __init__(self):
