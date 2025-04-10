@@ -16,8 +16,9 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev 
 
 RUN pip install uv
+
 RUN uv venv
-RUN . .venv/bin/activate
-RUN uv sync
+
+RUN uv sync --only-group fastmcp
 
 CMD ["uv", "run", "fastmcp", "dev", "server.py"]
