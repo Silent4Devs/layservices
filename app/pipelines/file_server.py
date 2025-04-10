@@ -4,6 +4,8 @@ from prefect.client.schemas.schedules import CronSchedule
 from prefect import Flow
 import traceback
 import asyncio
+from app.database.Qdrant import QdrantManager
+from app.services.Embeddings import Embeddings
 
 @task(retries=2, retry_delay_seconds=30)
 async def load_documents(document_type: str):
@@ -11,13 +13,22 @@ async def load_documents(document_type: str):
     try:
         logger.info(f"Iniciando carga de documentos del folder {document_type}...")
         loader = DocumentsLoader(document_type)
-        loader.load()
+        results = loader.load()
         logger.info(f"Carga de {document_type} completada")
-        return True
+        return results
     except Exception as e:
         logger.error(f"Error en {document_type}: {str(e)}")
         logger.error(traceback.format_exc())
         raise
+
+@task(retries=2, retry_delay_seconds=30)
+async def save_embeddings(embeddings_with_payload : list):
+    
+    get_run_logger().info("Guardando embeddings.")
+    embedder = Embeddings()
+    embedder.save(embeddings_with_payload, "file_server_documents")
+    get_run_logger().info("Embedings guardados.")
+    
 
 @flow(
     name="document_loading_flow",
@@ -28,8 +39,11 @@ async def load_documents(document_type: str):
 async def document_loading_flow():
 
     get_run_logger().info("Iniciando carga de documentos...")
-    await asyncio.gather(
+    sla_docs, bd_docs, mt_docs = await asyncio.gather(
         load_documents("SLA"),
         load_documents("BD"),
         load_documents("MT")
     )
+
+        
+    await save_embeddings(sla_docs+bd_docs+mt_docs)
