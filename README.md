@@ -37,6 +37,26 @@ Para installar las dependencias usa el comando
 uv sync
 ```
 
+Puedes añadir dependencias al pyproject.toml con:
+
+```bash
+uv add requests
+```
+
+Dado que el repositorio maneja dos servicios (FastApi y FastMCP) las dependencias se separan por proyecto dentro de pyproject.toml.
+
+Puedes bajar las dependencias de un grupo en específico usando el comando:
+
+```bash
+uv sync --only-group dev
+```
+
+Y añadir dependencias de formal similar:
+
+```bash
+uv add --group dev ruff
+```
+
 Para más información consulta la documentación oficial https://docs.astral.sh/uv/
 
 
@@ -63,6 +83,7 @@ alembic upgrade head
 Para más información consultar la documentación oficial: https://alembic.sqlalchemy.org/en/latest/
 
 ### UV 
+
 
 ### Prefect (Orquestación)
 
