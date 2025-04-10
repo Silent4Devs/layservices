@@ -4,7 +4,8 @@ from app.database.Redis import RedisManager
 from app.database.Qdrant import QdrantManager
 from sqlalchemy.sql import text
 from app.database.FileServer import SMBClient
-
+from config import settings
+import requests
 
 router = APIRouter()
 
@@ -72,3 +73,18 @@ async def test_smb():
     finally:
  
         smb_client.close_connection()
+
+
+@router.get("/ollama", response_model=dict)
+async def test_ollama():
+    """
+    Test Ollama connection.
+    """
+    try:
+        response = requests.get(f"{settings.OLLAMA}/api/tags", timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        models = [model["name"] for model in data.get("models", [])]
+        return {"status": "green", "message": "Ollama connection working :)", "models": models}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ollama error: {str(e)}")
