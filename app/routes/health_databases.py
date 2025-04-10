@@ -74,7 +74,6 @@ async def test_smb():
  
         smb_client.close_connection()
 
-
 @router.get("/ollama", response_model=dict)
 async def test_ollama():
     """
