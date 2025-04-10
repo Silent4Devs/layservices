@@ -11,6 +11,8 @@ Este proyecto constituye el backend principal para la inteligencia artificial de
 	- [Prefect (Orquestación)](#prefect)
 	- [Langchain (Framework IA)](#langchain)
 	- [Qdrant (Vector DB)](#qdrant)
+	- [FastAPI](#fastapi)
+	- [FastMCP (MCP Server)](#fastmcp)
 
 - [Despliegue Local](#despliegue-local-)
 
@@ -59,7 +61,14 @@ Para ejecutar las migraciones usa el comando:
 alembic upgrade head
 ```
 Para más información consultar la documentación oficial: https://alembic.sqlalchemy.org/en/latest/
+
+### UV 
+
 ### Prefect (Orquestación)
+
+
+
+
 ### Qdrant (Vector DB)
 
 
