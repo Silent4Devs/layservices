@@ -148,6 +148,7 @@ environments = true
 [dependency-groups]
 dev = [
     "fastapi>=0.115.9",
+    "transformers>=4.49.0",
     "uv>=0.6.6",
     "uvicorn>=0.34.0",
 ]
