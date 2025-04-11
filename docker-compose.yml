@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - 8000:8000
+      - 8010:8000
     volumes:
       - .:/app
     networks:
@@ -76,18 +76,42 @@ services:
     networks:
       - layservicesnetwork
 
-  prefect:
-    image: prefecthq/prefect:3-python3.12
-    container_name: prefect
+  # prefect:
+  #   image: prefecthq/prefect:3-python3.12
+  #   container_name: prefect
+  #   environment:
+  #     PREFECT_HOME: /data
+  #     PREFECT_API_URL: http://localhost:4200/api
+  #   command: prefect server start --host 0.0.0.0
+  #   ports:
+  #     - "4200:4200"  
+  #   volumes:
+  #     - prefect-data:/data  
+  #     - .:/app 
+  
+  prefect-server:
+    image: prefecthq/prefect:3-latest
+    container_name: prefect-server
     environment:
       PREFECT_HOME: /data
       PREFECT_API_URL: http://localhost:4200/api
-    command: prefect server start --host 0.0.0.0
-    ports:
-      - "4200:4200"  
     volumes:
-      - prefect-data:/data  
-      - .:/app 
+      - prefect-data:/root/.prefect
+      - .:/app
+    ports:
+      - "4200:4200"
+    command: ["prefect", "server", "start", "--host", "0.0.0.0"]
+
+  
+  
+  prefect-worker:
+    image: prefecthq/prefect:3-latest
+    environment:
+      - PREFECT_API_URL=http://localhost:4200/api
+    command: ["prefect", "worker", "start", "--pool", "default-agent-pool", "--type", "process"]
+ 
+
+
     
 configs:
   qdrant_config:
