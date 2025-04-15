@@ -76,19 +76,6 @@ services:
     networks:
       - layservicesnetwork
 
-  # prefect:
-  #   image: prefecthq/prefect:3-python3.12
-  #   container_name: prefect
-  #   environment:
-  #     PREFECT_HOME: /data
-  #     PREFECT_API_URL: http://localhost:4200/api
-  #   command: prefect server start --host 0.0.0.0
-  #   ports:
-  #     - "4200:4200"  
-  #   volumes:
-  #     - prefect-data:/data  
-  #     - .:/app 
-  
   prefect-server:
     image: prefecthq/prefect:3-latest
     container_name: prefect-server
@@ -99,20 +86,37 @@ services:
       - prefect-data:/root/.prefect
       - .:/app
     ports:
-      - "4200:4200"
-    command: ["prefect", "server", "start", "--host", "0.0.0.0"]
+      - 4200:4200
+    command: bash -c "prefect server start --host 0.0.0.0 & sleep 15 && prefect deploy --all && tail -f /dev/null"
+    networks:
+      - layservicesnetwork
 
-  
-  
   prefect-worker:
-    image: prefecthq/prefect:3-latest
+    build:
+      context: .
+      dockerfile: Dockerfile.worker 
+    restart: unless-stopped
     environment:
-      - PREFECT_API_URL=http://localhost:4200/api
-    command: ["prefect", "worker", "start", "--pool", "default-agent-pool", "--type", "process"]
- 
+      - PREFECT_API_URL=http://prefect-server:4200/api/
+    command: ["uv", "run", "--only-group", "worker","prefect", "worker", "start", "--pool", "default-agent-pool", "--type", "process"]
+    depends_on:
+      - prefect-server
+    networks:
+      - layservicesnetwork
+  
+  prefect-alarms-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker 
+    restart: unless-stopped
+    environment:
+      - PREFECT_API_URL=http://prefect-server:4200/api/
+    command: ["uv", "run", "--only-group", "worker","prefect", "worker", "start", "--pool", "alarms-worker", "--type", "process"]
+    depends_on:
+      - prefect-server
+    networks:
+      - layservicesnetwork
 
-
-    
 configs:
   qdrant_config:
     content: |

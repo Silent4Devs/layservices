@@ -1,0 +1,11 @@
+FROM prefecthq/prefect:3-latest
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install uv
+
+RUN uv venv
+
+RUN uv sync --only-group worker
