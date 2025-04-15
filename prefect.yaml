@@ -7,7 +7,7 @@ deployments:
   - name: logrhythm-realtime-monitoring
     entrypoint: "app/pipelines/alarms_fetcher.py:alarm_monitoring_logrythm"
     work_pool:
-      name: default-agent-pool
+      name: alarms-worker
       work_queue_name: critical
     parameters: {}
     tags: ["logrhythm", "monitoring", "realtime", "prod"]
@@ -17,7 +17,7 @@ deployments:
   - name: prtg-realtime-monitoring
     entrypoint: "app/pipelines/alarms_fetcher.py:alarm_monitoring_prtg"
     work_pool:
-      name: default-agent-pool
+      name: alarms-worker
       work_queue_name: critical
     parameters: {}
     tags: ["prtg", "monitoring", "realtime", "prod"]
