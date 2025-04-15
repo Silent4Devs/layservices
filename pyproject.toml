@@ -147,13 +147,26 @@ environments = true
 
 [dependency-groups]
 dev = [
+    "docling>=2.15.1",
+    "dynaconf>=3.2.10",
     "fastapi>=0.115.9",
+    "prefect>=3.2.12",
+    "qdrant-client>=1.13.3",
+    "redis>=5.2.1",
+    "sentence-transformers>=3.4.1",
+    "smbprotocol>=1.15.0",
+    "sqlalchemy>=2.0.38",
     "transformers>=4.49.0",
     "uv>=0.6.6",
     "uvicorn>=0.34.0",
 ]
 fastmcp = [
+    "fastapi>=0.115.9",
     "fastmcp>=0.4.1",
     "uv>=0.6.6",
     "uvicorn>=0.34.0",
+]
+worker = [
+    "aiohttp>=3.11.13",
+    "prefect>=3.2.12",
 ]
