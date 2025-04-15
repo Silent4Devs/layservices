@@ -1,19 +1,15 @@
-FROM python:3.12-slim
+FROM nikolaik/python-nodejs
 
 WORKDIR /app
 
 COPY . /app
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    python3-dev \
-    build-essential 
-    
+RUN npm install @modelcontextprotocol/inspector@0.8.2
+
 RUN pip install uv
 
 RUN uv venv
 
 RUN uv sync --only-group fastmcp
 
-CMD ["uv", "run", "fastmcp", "dev", "server.py"]
+CMD ["uv", "run", "--only-group", "fastmcp", "fastmcp", "dev", "server.py"]
