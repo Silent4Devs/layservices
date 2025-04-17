@@ -11,8 +11,13 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
+
+## Important: If you want to use automatic migrations based in your models, you should import your models here
+
 from app.models.base import Base
 from app.models.ProcessedDocument import ProcessedDocument
+from app.models.LogrhythmAlarm import LogRhythmAlarm
+# from app.models.PrtgAlarm import PrtgAlarm
 
 load_dotenv()
 
