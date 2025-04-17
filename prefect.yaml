@@ -1,6 +1,6 @@
 name: socfusion
 variables:
-  PREFECT_API_URL: "http://localhost:4200"
+  PREFECT_API_URL: "http://localhost:4200/api"
 
 deployments:
   # Deployment para LogRhythm
