@@ -23,5 +23,8 @@ def get_all_alarms(db: Session = Depends(get_db)):
     return jsonable_encoder(alarms)
 
 @router.post("/classify")
-def classifyAlarm():
+def classifyAlarm(db: Session = Depends(get_db)):
+
     pass
+    
+    
