@@ -24,4 +24,5 @@ Only respond with one word: **High**, **Medium**, or **Low**
 
 ---
 
-### Examples:
+### Alert:
+{input}

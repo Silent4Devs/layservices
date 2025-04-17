@@ -4,6 +4,7 @@ from .ConnectionManager import ConnectionManager
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from qdrant_client.http.exceptions import UnexpectedResponse
 from typing import List, Dict
+import uuid
 
 class QdrantManager(ConnectionManager):
     def __init__(self):
@@ -14,7 +15,7 @@ class QdrantManager(ConnectionManager):
         qdrant_port = settings.QDRANT_PORT
 
         self.client = QdrantClient(host=qdrant_host, port=qdrant_port)
-
+    
     def get_client(self):
         """
         Returns the Qdrant client.
@@ -29,12 +30,33 @@ class QdrantManager(ConnectionManager):
         """
         print("Qdrant connection closed.")
 
-    def migrate(self):
+    def migrate(self, collection_name: str, vector_size : int):
+        """
+        Migrate or create a collection in Qdrant if it doesn't exist.
+        
+        Args:
+            collection_name (str): Name of the collection to be checked or created.
+            embedding_size (int): The size of the embedding vectors to be used in the collection.
+            distance (str): The distance metric to be used. Default is 'Cosine'.
+        """
+        try:
+            collections = self.client.get_collections()
+            collection_names = [collection[0] for collection in collections]
 
-        self.client.create_collection(
-            collection_name="file_server_documents",
-            vectors_config=VectorParams(size=4, distance=Distance.DOT),
-        )
+            if collection_name not in collection_names:
+                
+                print(f"Collection '{collection_name}' not found. Creating it...")
+
+                self.client.create_collection(
+                    collection_name="file_server_documents",
+                    vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
+                )
+                print(f"Collection '{collection_name}' created successfully.")
+            else:
+                print(f"Collection '{collection_name}' already exists.")
+
+        except Exception as e:
+            print(f"An error occurred during migration: {e}")
 
     def reset(self):
         pass
@@ -53,14 +75,16 @@ class QdrantManager(ConnectionManager):
                 raise ValueError("El nombre de la colección no es válido.")
 
             points = []
-            for idx, embedding in enumerate(embeddings):
-                vector = embedding.get('embedding')
-                payload = embedding.get('payload', {})
 
-                if not isinstance(vector, list) or not vector:
-                    raise ValueError(f"Embedding inválido en posición {idx}: {vector}")
-                
-                points.append(PointStruct(vector=vector, payload=payload))
+            for idx, embedding in enumerate(embeddings):
+                vectors = embedding.get("embeddings")    
+                payload = embedding.get("payload", {})
+                    
+                for vector in vectors:
+                    if not isinstance(vector, list) or not vector:
+                        raise ValueError(f"Embedding inválido en posición {idx}: {vector}")
+                    
+                    points.append(PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload))
 
             operation_info = self.client.upsert(
                 collection_name=collection,
@@ -68,6 +92,7 @@ class QdrantManager(ConnectionManager):
                 points=points,
             )
 
+            print(f"Operation Qdrant Info: {operation_info}")
             return operation_info
 
         except ValueError as ve:

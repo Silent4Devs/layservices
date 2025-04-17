@@ -1,10 +1,10 @@
-from AlarmFetcher import AlarmFetcher
+from app.services.apis.AlarmFetcher import AlarmFetcher
 import aiohttp
 import asyncio
 from dotenv import load_dotenv
 import os
 import ssl
-
+from prefect import get_run_logger
 
 class PRTGAlarmFetcher(AlarmFetcher):
 
@@ -31,26 +31,15 @@ class PRTGAlarmFetcher(AlarmFetcher):
                         if response.status == 200:
                             data = await response.json()
                             alerts = data.get("alerts", [])
+                            get_run_logger().info(f"Alarmas de PRTG: {data}")
                             for alert in alerts:
                                 alert_id = alert.get("id")
                                 if alert_id and alert_id not in self.seen_alerts:
                                     self.seen_alerts.add(alert_id)
-                                    print(f"Nueva alerta: {alert}")
+                                    get_run_logger().info(f"Nueva alerta: {alert}")
                         else:
                             print(f"Error {response.status}: {await response.text()}")
                 except Exception as e:
                     print(f"Error de conexión: {e}")
                 
                 await asyncio.sleep(0.3)  
-async def main():
-    load_dotenv()
-    url = os.getenv("PRTG_API_URL")
-    api_key = os.getenv("PRTG_API_TOKEN")
-    if not api_key:
-        print("API_KEY no encontrada en .env")
-        return
-    fetcher = PRTGAlarmFetcher(url, api_key)
-    await fetcher.fetchAlarms()
-
-if __name__ == "__main__":
-    asyncio.run(main())

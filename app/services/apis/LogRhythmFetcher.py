@@ -38,11 +38,12 @@ class LoghRhythmAlarmFetcher(AlarmFetcher):
                                     self.seen_alerts.add(alarm_id)
 
                                     try:
-                                        detail = await self.getAlarmInformationById(alarm_id)
+                                        details = await self.getAlarmInformationById(alarm_id)
                                         event = await self.getAlarmEventInformationById(alarm_id)
-                                        self.processor.process({'data': data, 'detail': detail, 'event' : event})
+                                        self.logger.info({'details': details.get('alarmDetails', {}), 'event' : event.get('alarmEventsDetails', {})})
+                                        await self.processor.process({'alarm': alarma, 'details': details.get('alarmDetails', {}), 'event' : event.get('alarmEventsDetails', [])[0]})
                                     except Exception as e:
-                                        print(f"Error procesando alarma {alarm_id}: {e}")
+                                        self.logger.info(f"Error procesando alarma {alarm_id}: {e}")
 
                         else:
                             print(f"Error HTTP: {response.status}")
