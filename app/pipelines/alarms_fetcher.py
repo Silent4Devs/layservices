@@ -6,7 +6,6 @@ from config import settings
 @task
 async def fetch_alarms_logrhythm(url: str, api_key: str):
     
-
     fetcher = LoghRhythmAlarmFetcher(url, api_key)
     await fetcher.fetchAlarms()
 

@@ -24,11 +24,15 @@ async def load_documents(document_type: str):
 @task(retries=2, retry_delay_seconds=30)
 async def save_embeddings(embeddings_with_payload : list):
     
-    get_run_logger().info("Guardando embeddings.")
-    embedder = Embeddings()
-    embedder.save(embeddings_with_payload, "file_server_documents")
-    get_run_logger().info("Embedings guardados.")
+    qdrant_client = QdrantManager()
+    get_run_logger().info(f"Guardando embeddings")
+    qdrant_client.save_embeddings(embeddings_with_payload, "file_server_documents")
+    get_run_logger().info("Embeddings guardados.")
     
+
+@task()
+async def save_files_in_database(embeddings_with_payload : str):
+    pass
 
 @flow(
     name="document_loading_flow",
@@ -39,11 +43,12 @@ async def save_embeddings(embeddings_with_payload : list):
 async def document_loading_flow():
 
     get_run_logger().info("Iniciando carga de documentos...")
-    sla_docs, bd_docs, mt_docs = await asyncio.gather(
-        load_documents("SLA"),
-        load_documents("BD"),
-        load_documents("MT")
-    )
-
+    
+    sla_docs = await load_documents("SLA")
+    await save_embeddings(sla_docs)
+    bd_docs = await load_documents("BD")  
+    await save_embeddings(bd_docs)  
+    mt_docs = await load_documents("MT")
+    await save_embeddings(mt_docs)
         
     await save_embeddings(sla_docs+bd_docs+mt_docs)
