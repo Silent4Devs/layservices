@@ -10,4 +10,4 @@ RUN cd /app/app && uv run --only-group dev alembic upgrade head
 
 WORKDIR /app
 
-CMD ["uv", "run", "--only-group", "dev", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD sh -c "cd /app/app && uv run --only-group dev alembic upgrade head && cd /app && uv run --only-group dev uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
