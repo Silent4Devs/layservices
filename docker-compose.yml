@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - 8010:8000
+      - 8000:8000
     volumes:
       - .:/app
     networks:
@@ -88,7 +88,7 @@ services:
       - .:/app
     ports:
       - 4200:4200
-    command: bash -c "cd /app && prefect server database upgrade -y && sleep 5 && prefect server start --host 0.0.0.0 && sleep 15 && prefect deploy --all && tail -f /dev/null"
+    command: bash -c "cd /app && ls -la && cat prefect.yaml && prefect server database upgrade -y && sleep 5 && prefect server start --host 0.0.0.0 && sleep 15 && prefect deploy --all && tail -f /dev/null"    
     networks:
       - layservicesnetwork
 
