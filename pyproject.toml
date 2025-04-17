@@ -152,6 +152,7 @@ dev = [
     "dynaconf>=3.2.10",
     "fastapi>=0.115.9",
     "prefect>=3.2.12",
+    "python-multipart>=0.0.20",
     "qdrant-client>=1.13.3",
     "redis>=5.2.1",
     "sentence-transformers>=3.4.1",
@@ -173,4 +174,5 @@ fastmcp = [
 worker = [
     "aiohttp>=3.11.13",
     "prefect>=3.2.12",
+    "python-multipart>=0.0.20",
 ]

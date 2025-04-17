@@ -4016,6 +4016,7 @@ dev = [
     { name = "dynaconf" },
     { name = "fastapi" },
     { name = "prefect" },
+    { name = "python-multipart" },
     { name = "qdrant-client" },
     { name = "redis" },
     { name = "sentence-transformers" },
@@ -4037,6 +4038,7 @@ fastmcp = [
 worker = [
     { name = "aiohttp" },
     { name = "prefect" },
+    { name = "python-multipart" },
 ]
 
 [package.metadata]
@@ -4183,6 +4185,7 @@ dev = [
     { name = "dynaconf", specifier = ">=3.2.10" },
     { name = "fastapi", specifier = ">=0.115.9" },
     { name = "prefect", specifier = ">=3.2.12" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "qdrant-client", specifier = ">=1.13.3" },
     { name = "redis", specifier = ">=5.2.1" },
     { name = "sentence-transformers", specifier = ">=3.4.1" },
@@ -4202,6 +4205,7 @@ fastmcp = [
 worker = [
     { name = "aiohttp", specifier = ">=3.11.13" },
     { name = "prefect", specifier = ">=3.2.12" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
 ]
 
 [[package]]
