@@ -148,6 +148,7 @@ environments = true
 
 [dependency-groups]
 dev = [
+    "psycopg2-binary>=2.9.10",
     "alembic>=1.15.1",
     "docling>=2.15.1",
     "dynaconf>=3.2.10",
