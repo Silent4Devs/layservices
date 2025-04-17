@@ -3,6 +3,9 @@ from app.database.FileServer import SMBClient
 from fastapi.responses import StreamingResponse
 from io import BytesIO
 from typing import List
+from app.services.Docling import DocumentProcessor
+import os
+import tempfile
 
 router = APIRouter()
 
@@ -32,3 +35,25 @@ def get_files():
         return files
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving file list: {str(e)}")
+    
+@router.post("/get-markdown")
+async def convert_document_to_markdown(file: UploadFile = File(...)):
+    if not file.filename.endswith((".pdf", ".docx")):
+        return {"error": "Only .pdf and .docx files are supported."}
+
+    try:
+        file_bytes = await file.read()
+        print("Conviertiendo a bytes...")
+        byte_stream = BytesIO(file_bytes)
+
+        processor = DocumentProcessor()
+        print("Procesando...")
+        markdown = processor.getMarkdown(byte_stream)
+        print("Finalizando...")
+        return {
+            "filename": file.filename,
+            "markdown": markdown,
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
