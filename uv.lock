@@ -4011,6 +4011,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "alembic" },
     { name = "docling", version = "2.15.1", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
     { name = "docling", version = "2.28.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine != 'x86_64' or sys_platform != 'darwin'" },
     { name = "dynaconf" },
@@ -4182,6 +4183,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "alembic", specifier = ">=1.15.1" },
     { name = "docling", specifier = ">=2.15.1" },
     { name = "dynaconf", specifier = ">=3.2.10" },
     { name = "fastapi", specifier = ">=0.115.9" },

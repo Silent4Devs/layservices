@@ -148,6 +148,7 @@ environments = true
 
 [dependency-groups]
 dev = [
+    "alembic>=1.15.1",
     "docling>=2.15.1",
     "dynaconf>=3.2.10",
     "fastapi>=0.115.9",
