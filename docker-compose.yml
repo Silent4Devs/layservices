@@ -98,7 +98,7 @@ services:
       dockerfile: Dockerfile.worker 
     restart: unless-stopped
     environment:
-      - PREFECT_API_URL=http://prefect-server:4200/api/
+      - PREFECT_API_URL=http://prefect-server:4200/api
     command: ["uv", "run", "--only-group", "worker","prefect", "worker", "start", "--pool", "default-agent-pool", "--type", "process"]
     depends_on:
       - prefect-server
@@ -111,7 +111,7 @@ services:
       dockerfile: Dockerfile.worker 
     restart: unless-stopped
     environment:
-      - PREFECT_API_URL=http://prefect-server:4200/api/
+      - PREFECT_API_URL=http://prefect-server:4200/api
     command: ["uv", "run", "--only-group", "worker","prefect", "worker", "start", "--pool", "alarms-worker", "--type", "process"]
     depends_on:
       - prefect-server
