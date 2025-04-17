@@ -151,6 +151,7 @@ dev = [
     "docling>=2.15.1",
     "dynaconf>=3.2.10",
     "fastapi>=0.115.9",
+    "langchain-community>=0.3.19",
     "prefect>=3.2.12",
     "python-multipart>=0.0.20",
     "qdrant-client>=1.13.3",
