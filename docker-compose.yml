@@ -86,7 +86,6 @@ services:
     volumes:
       - prefect-data:/root/.prefect
       - .:/app
-      - prefect.yaml:/prefect.yaml
     ports:
       - 4200:4200
     command: bash -c "cd /app && prefect server database upgrade -y && sleep 5 && prefect server start --host 0.0.0.0 && sleep 15 && prefect deploy --all && tail -f /dev/null"
