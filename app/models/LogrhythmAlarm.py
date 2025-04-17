@@ -7,12 +7,12 @@ class LogRhythmAlarm(Base):
     __tablename__ = 'logrhythm_alarms'
 
     id = Column(Integer, primary_key=True)
-    alert_data_id = Column(String(36), nullable=True)
     alarm_rule_id = Column(String(36), nullable=True)
     alarm_id = Column(String(36), nullable=True)
     person_id = Column(String(36), nullable=True)
     alarm_date = Column(DateTime, nullable=True)
     alarm_status_name = Column(String(50), nullable=True)
+    alarm_status = Column(String(100), nullable=True)
     entity_id = Column(String(36), nullable=True)
     entity_name = Column(String(255), nullable=True)
     alarm_rule_name = Column(String(255), nullable=True)
@@ -53,5 +53,8 @@ class LogRhythmAlarm(Base):
     severity = Column(String(50), nullable=True)
     status = Column(String(50), nullable=True)
 
+    model_classification = Column(String(10), nullable=True)
+    real_classification = Column(String(10), nullable=True)
+   
     def __repr__(self):
         return f"<LogRhythmAlarm(id={self.id}, alarm_id='{self.alarm_id}', status='{self.alarm_status_name}')>"
