@@ -18,33 +18,32 @@ pipeline {
                         sh '''
                             export GITHUB_TOKEN=${GITHUB_TOKEN}
                             export SSH_PASS=${SSH_PASS}
-                            sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no ${SSH_USER}@${DEPLOY_SERVER} '
-                                # Crear el directorio si no existe
-                                if [ ! -d "${DEPLOY_PATH}" ]; then
-                                    echo "$SSH_PASS" | sudo -S mkdir -p ${DEPLOY_PATH}
-                                    echo "$SSH_PASS" | sudo -S chown -R ${SSH_USER}:${SSH_USER} ${DEPLOY_PATH}
+                            
+                            sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no ${SSH_USER}@${DEPLOY_SERVER} bash -c "'
+                                if [ ! -d \\"${DEPLOY_PATH}\\" ]; then
+                                    echo \\"$SSH_PASS\\" | sudo -S mkdir -p \\"${DEPLOY_PATH}\\"
+                                    echo \\"$SSH_PASS\\" | sudo -S chown -R ${SSH_USER}:${SSH_USER} \\"${DEPLOY_PATH}\\"
                                 fi
 
-                                cd ${DEPLOY_PATH} &&
+                                cd \\"${DEPLOY_PATH}\\" || exit 1
 
-                                git config --global --add safe.directory ${DEPLOY_PATH} &&
+                                git config --global safe.directory \\"${DEPLOY_PATH}\\"
 
-                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
+                                echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
 
-                                echo "Realizando pull del repositorio..." &&
-                                echo "$SSH_PASS" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH} &&
+                                echo \\"Realizando pull del repositorio...\\"
+                                echo \\"$SSH_PASS\\" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
 
-                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
+                                echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
 
-                                echo "Preparando commit..." &&
-                                git add . &&
-                                git commit -m "Commit automático desde Jenkins" || echo "No hay cambios que commitear" &&
+                                git add .
+                                git commit -m \\"Commit automático desde Jenkins\\" || echo \\"No hay cambios que commitear\\"
 
-                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
+                                echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
 
-                                echo "Haciendo push..." &&
+                                echo \\"Haciendo push...\\"
                                 git push https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
-                            '
+                            '"
                         '''
                     }
                 }
@@ -52,3 +51,4 @@ pipeline {
         }
     }
 }
+
