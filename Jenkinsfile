@@ -11,7 +11,7 @@ pipeline {
         stage('Pull y Push via SSH') {
             steps {
                 script {
-                    withCredentials([
+                    withCredentials([ 
                         usernamePassword(credentialsId: 'LS-CREDENCIALES', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS'),
                         string(credentialsId: 'GITHUB_PAT_TOKEN', variable: 'GITHUB_TOKEN')  
                     ]) {
@@ -30,13 +30,11 @@ pipeline {
                                 # Marcar el repositorio como seguro para evitar el error de "dubious ownership"
                                 git config --global --add safe.directory ${DEPLOY_PATH} &&
 
+                                # Realizar pull del repositorio
                                 echo "Realizando pull del repositorio..." &&
                                 echo "$SSH_PASS" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH} &&
 
-                                echo "Haciendo cambios..." &&
-                                # Usar sudo para poder escribir en el archivo
-                                echo "$SSH_PASS" | sudo -S bash -c 'echo "Cambio automático desde Jenkins" >> ${DEPLOY_PATH}/jenkins-update.txt' &&
-
+                                # Realizar commit y push solo si hay cambios
                                 git add . &&
                                 git commit -m "Commit automático desde Jenkins" || echo "No hay cambios que commitear" &&
 
