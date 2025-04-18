@@ -28,18 +28,16 @@ pipeline {
                                 cd \\"${DEPLOY_PATH}\\" || exit 1
 
                                 git config --global safe.directory \\"${DEPLOY_PATH}\\"
+                                git config user.name \\"Jenkins Bot\\"
+                                git config user.email \\"jenkins@silent4devs.local\\"
 
                                 echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
 
                                 echo \\"Realizando pull del repositorio...\\"
-                                echo \\"$SSH_PASS\\" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
-
-                                echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
+                                echo \\"$SSH_PASS\\" | sudo -S git pull --rebase https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
 
                                 git add .
                                 git commit -m \\"Commit automático desde Jenkins\\" || echo \\"No hay cambios que commitear\\"
-
-                                echo \\"$SSH_PASS\\" | sudo -S chmod -R 777 \\"${DEPLOY_PATH}\\"
 
                                 echo \\"Haciendo push...\\"
                                 git push https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
