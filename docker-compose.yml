@@ -82,7 +82,7 @@ services:
     container_name: prefect-server
     environment:
       PREFECT_HOME: /data
-      PREFECT_API_URL: http://0.0.0.0:4200/api
+      PREFECT_API_URL: http://localhost:4200/api
     volumes:
       - prefect-data:/root/.prefect
       - .:/app
@@ -91,7 +91,7 @@ services:
     command: >
       bash -c "
       cd /app &&
-      prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api &&
+      prefect config set PREFECT_API_URL=http://localhost:4200/api &&
       prefect server database upgrade -y &&
       (prefect server start --host 0.0.0.0 & ) &&
       sleep 10 &&
