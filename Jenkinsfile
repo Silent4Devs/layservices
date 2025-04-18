@@ -15,32 +15,38 @@ pipeline {
                         usernamePassword(credentialsId: 'LS-CREDENCIALES', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS'),
                         string(credentialsId: 'GITHUB_PAT_TOKEN', variable: 'GITHUB_TOKEN')  
                     ]) {
-                        sh """
-                            sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no \\
-                                ${SSH_USER}@${DEPLOY_SERVER} '
-                                    cd ${DEPLOY_PATH} &&
-                                    
-                                    # Marcar el repositorio como seguro para evitar el error de "dubious ownership"
-                                    git config --global --add safe.directory ${DEPLOY_PATH} &&
+                        sh '''
+                            export GITHUB_TOKEN=${GITHUB_TOKEN}
+                            export SSH_PASS=${SSH_PASS}
+                            sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no ${SSH_USER}@${DEPLOY_SERVER} '
+                                # Crear el directorio si no existe
+                                if [ ! -d "${DEPLOY_PATH}" ]; then
+                                    echo "$SSH_PASS" | sudo -S mkdir -p ${DEPLOY_PATH}
+                                    echo "$SSH_PASS" | sudo -S chown -R ${SSH_USER}:${SSH_USER} ${DEPLOY_PATH}
+                                fi
 
-                                    echo "Realizando pull del repositorio..." &&
-                                    echo "$SSH_PASS" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH} &&
+                                cd ${DEPLOY_PATH} &&
 
-                                    echo "Haciendo cambios..." &&
-                                    # Usar sudo para poder escribir en el archivo
-                                    echo "$SSH_PASS" | sudo -S bash -c 'echo "Cambio automático desde Jenkins" >> ${DEPLOY_PATH}/jenkins-update.txt' &&
+                                # Marcar el repositorio como seguro para evitar el error de "dubious ownership"
+                                git config --global --add safe.directory ${DEPLOY_PATH} &&
 
-                                    git add . &&
-                                    git commit -m "Commit automático desde Jenkins" || echo "No hay cambios que commitear" &&
+                                echo "Realizando pull del repositorio..." &&
+                                echo "$SSH_PASS" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH} &&
 
-                                    echo "Haciendo push..." &&
-                                    git push https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
-                                '
-                        """
+                                echo "Haciendo cambios..." &&
+                                # Usar sudo para poder escribir en el archivo
+                                echo "$SSH_PASS" | sudo -S bash -c 'echo "Cambio automático desde Jenkins" >> ${DEPLOY_PATH}/jenkins-update.txt' &&
+
+                                git add . &&
+                                git commit -m "Commit automático desde Jenkins" || echo "No hay cambios que commitear" &&
+
+                                echo "Haciendo push..." &&
+                                git push https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
+                            '
+                        '''
                     }
                 }
             }
         }
     }
 }
-
