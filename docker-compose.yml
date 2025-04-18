@@ -88,7 +88,7 @@ services:
       - .:/app
     ports:
       - 4200:4200
-    command: bash -c "cd /app && ls -la && cat prefect.yaml && prefect server database upgrade -y && sleep 5 && prefect server start --host 0.0.0.0 && sleep 15 && prefect deploy --all && tail -f /dev/null"    
+    command: bash -c "cd /app && prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api && ls -la && cat prefect.yaml && prefect server database upgrade -y && sleep 5 && prefect server start --host 0.0.0.0 && sleep 15 && prefect deploy --all && tail -f /dev/null"    
     networks:
       - layservicesnetwork
 
