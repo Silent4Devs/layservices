@@ -4,7 +4,7 @@ pipeline {
     environment {
         DEPLOY_SERVER = '192.168.40.1'
         DEPLOY_PATH = '/var/contendores/layservices'
-        GIT_BRANCH = 'main' // o la que uses
+        GIT_BRANCH = 'main' 
     }
 
     stages {
