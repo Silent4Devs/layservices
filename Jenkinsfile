@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_SERVER = '192.168.40.1'
-        DEPLOY_PATH = '/var/contendores/layservices'
+        DEPLOY_PATH = '/var/contenedores/layservices'
         GIT_BRANCH = 'main' 
     }
 
