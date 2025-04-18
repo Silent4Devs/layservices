@@ -27,16 +27,20 @@ pipeline {
 
                                 cd ${DEPLOY_PATH} &&
 
-                                # Marcar el repositorio como seguro para evitar el error de "dubious ownership"
                                 git config --global --add safe.directory ${DEPLOY_PATH} &&
 
-                                # Realizar pull del repositorio
+                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
+
                                 echo "Realizando pull del repositorio..." &&
                                 echo "$SSH_PASS" | sudo -S git pull https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH} &&
 
-                                # Realizar commit y push solo si hay cambios
+                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
+
+                                echo "Preparando commit..." &&
                                 git add . &&
                                 git commit -m "Commit automático desde Jenkins" || echo "No hay cambios que commitear" &&
+
+                                echo "$SSH_PASS" | sudo -S chmod -R 777 ${DEPLOY_PATH} &&
 
                                 echo "Haciendo push..." &&
                                 git push https://jonathansilent:${GITHUB_TOKEN}@github.com/Silent4Devs/layservices.git ${GIT_BRANCH}
